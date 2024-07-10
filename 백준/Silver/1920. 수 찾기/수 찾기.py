@@ -11,7 +11,7 @@ for i in range(m):
     pr = n-1
     isExist = False
     
-    while True:
+    while pl <= pr:
         pc = (pl+pr)//2
         if giv_string[pc] == key_string[i]:
             isExist = True
@@ -21,8 +21,6 @@ for i in range(m):
             pl = pc + 1
         else:
             pr = pc -1
-        if pl > pr:
-            break
     
     if not isExist:
         print(0)
