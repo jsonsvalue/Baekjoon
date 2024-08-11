@@ -1,12 +1,15 @@
-A = int(input())
+import sys
 
-if A>=90 and A<=100:
+num = int(sys.stdin.readline())
+
+if num >=90:
     print("A")
-elif A>=80 and A<90:
+elif num >=80:
     print("B")
-elif A>=70 and A<80:
-    print("C")
-elif A>=60 and A<70:
+elif num >=70:
+    print("C")    
+elif num >=60:
     print("D")
 else:
     print("F")
+
