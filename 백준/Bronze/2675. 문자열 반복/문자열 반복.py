@@ -1,12 +1,14 @@
-tot_num = int(input())
+import sys
+read = sys.stdin.readline
 
-for i in range(0, tot_num):
-    tot_char_list = input().split()
+n = int(read().strip())
+
+for i in range(n):
+    rpt_list = read().strip().split()
+    rpt, rptstr = int(rpt_list[0]), rpt_list[1]
     
-    giv_int, giv_char = int(tot_char_list[0]), tot_char_list[1]
-    
-    for j in range(0, len(giv_char)):
-        for k in range(0, giv_int):
-            print(giv_char[j], end = "")
+    for i in range(len(rptstr)):
+        print(rptstr[i] * rpt, end = '')
     print()
-            
+
+      
