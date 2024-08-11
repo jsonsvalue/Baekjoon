@@ -1,4 +1,9 @@
-num = int(input())
+import sys
+
+read = sys.stdin.readline
+
+num = int(read().strip())
 
 for i in range(1,10):
-    print(f"{num} * {i} = {num*i}")
+    print(f"{num} * {i} = {num * i}")
+ 
