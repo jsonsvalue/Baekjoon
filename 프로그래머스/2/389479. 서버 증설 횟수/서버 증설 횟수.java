@@ -1,60 +1,34 @@
-import java.util.*;
-
 class Solution {
-    static int totHours = 24;
-    
-    public int solution(int[] players, int unit, int lasting) {
-        // m명 늘어날 때마다 서버가 1대 추가로 필요.
-        // n*m ~ n*(m+1) -> 최소 n대의 증설된 서버가 운영 중이어야 함.
-        // 한번 증설한 서버는 k시간 운영하고 반납됨.
+    static int HOURS=24;
+    public int solution(int[] players, int m, int k) { 
+        // m*n ~ m*(n+1)
+        // 서버당 감당 가능 인원:m
+        // 증설 시 지속 시간: k
 
-        // 서버를 최소 몇번 증설해야 하나?
-        // player 수에 대해서 server수를 관리하는 변수랑 비교해서
-        // 더 필요하다면 증설한다.
-
-        int totHotServers = 0;
-        int addedServers = 0;
-
-        // 서버가 줄어드는 시각과 대수를 HashMap에 담아준다.
-        Map<Integer, Integer> serverDecr = new HashMap<>();
-        int[] serverNum = new int[totHours];
-
-        for(int hour = 0; hour < totHours; hour++)
+        // totsvrNeeded = hotSvr + svrAdded
+        // 서버 꺼지는 시간 반영하는 배열
+        int[] svrOffTime = new int[HOURS];
+        int hotSvr = 0;
+        int svrAdded = 0;
+        for(int h=0; h<HOURS; h++)
         {
-            int player = players[hour];
-            int batch = player/unit;
+            int player = players[h];
 
-            if(serverDecr.containsKey(hour))
-            {
-                totHotServers -= serverDecr.get(hour);
-                totHotServers = Math.max(totHotServers,0);
-            }
+            if(svrOffTime[h]!=0) hotSvr = Math.max(hotSvr - svrOffTime[h],0);
 
-            // 현재 떠 있는 서버 수 보다 띄워야 하는 서버 수가 더 많다면,
-            // 띄워야 하는 서버 - 현재 떠 있는 서버 수 만큼 더해준다.
-            if(batch-totHotServers  > 0)
-            {
-                int increment = batch-totHotServers;
-                addedServers += increment;
-                
-                totHotServers = batch;
-                
-                // lasting 시간 뒤 꺼져야하는 서버의 개수를 map에 기록한다.
-                if(hour+lasting < totHours)
-                {
-                    serverDecr.put(hour+lasting, increment);
-                }
-            }
+            int totSvrNeeded = player/m;
 
-            serverNum[hour] = totHotServers;
+            // totSvrNeeded-hotSvr가 양수일 때만 더해준다.
+            // 즉 해당 서버 사용자 수 보다 띄워져 있는 서버가 더 많다고 서버를 줄이지 않는다.
+            int givHourAdded = Math.max(totSvrNeeded-hotSvr , 0);
+            svrAdded += givHourAdded;
+
+            // 띄워져 있는 서버, 필요한 서버 중 더 큰 수를, 띄워져 있는 서버 수로 지정한다.
+            hotSvr=Math.max(hotSvr, totSvrNeeded);
+
+            if(h + k < HOURS) svrOffTime[h+k] = givHourAdded;
         }
         
-        return addedServers;
+        return svrAdded;
     }
-    
-    static class GameServer
-    {
-        
-    }
-    
 }
